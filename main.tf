@@ -3,8 +3,8 @@ provider "aws" {
 }
 
 resource "aws_instance" "nginx-server" {
-  ami = "ami-0e86e20dae9224db8"
-  instance_type = "t3.micro"
+  ami = var.ami_id
+  instance_type = var.instance_type
   # ejecutar script en instancia
   user_data = <<-EOF
               #!/bin/bash
@@ -18,8 +18,8 @@ resource "aws_instance" "nginx-server" {
   vpc_security_group_ids = [aws_security_group.nginx-server-sg.id]
 
   tags = {
-		Name = "nginx-server" # nombre de la instancia
-		Environment = "test" # ambiente
+		Name = var.srv_name # nombre de la instancia
+		Environment = var.environment # ambiente
 		Owner = "owner@correo.com" # Dueño
 		Team = "DevOps" # Equipo
 		Project = "Webinar"		
@@ -33,8 +33,8 @@ resource "aws_key_pair" "nginx-server-ssh" {
   public_key = file("nginx-server.key.pub")
 
   tags = {
-		Name = "nginx-server-ssh" # nombre de la instancia
-		Environment = "test" # ambiente
+		Name = "${var.srv_name}-sh" # nombre de la instancia
+		Environment = var.environment # ambiente
 		Owner = "owner@correo.com" # Dueño
 		Team = "DevOps" # Equipo
 		Project = "Webinar"		
@@ -67,8 +67,8 @@ resource "aws_security_group" "nginx-server-sg" {
   }
 
   tags = {
-		Name = "nginx-server-output" # nombre de la instancia
-		Environment = "test" # ambiente
+		Name = "${var.srv_name}-output" # nombre de la instancia
+		Environment = var.environment # ambiente
 		Owner = "owner@correo.com" # Dueño
 		Team = "DevOps" # Equipo
 		Project = "Webinar"		
@@ -84,6 +84,32 @@ output "server_public_dns" {
 	description = "DNS público instancia EC2"
 	value = aws_instance.nginx-server.public_dns
 }
+
+variable "ami_id" {
+  type        = string
+  description = "Sistema operativo"
+  default = "ami-0e86e20dae9224db8"
+}
+
+variable "instance_type" {
+  type        = string
+  default     = "t3.micro"
+  description = "tipo de instancia EC2"
+}
+
+variable "srv_name" {
+  type        = string
+  default     = "webserver"
+  description = "nombre del servidor"
+}
+
+variable "environment" {
+  type        = string
+  default     = "test"
+  description = "Ambiente de la app"
+}
+
+
 
 
 
