@@ -14,3 +14,23 @@ module "nginx_server_qa" {
   environment = "qa"
 }
 
+output "nginx_dev_public_ip" {
+	description = "IP pública instancia EC2"
+	value = module.nginx_server_dev.server_public_ip
+}
+
+output "nginx_dev_public_dns" {
+	description = "DNS público instancia EC2"
+	value = module.nginx_server_dev.server_public_dns
+}
+
+output "nginx_qa_public_ip" {
+	description = "IP pública instancia EC2"
+	value = module.nginx_server_qa.server_public_ip
+}
+
+output "nginx_qa_public_dns" {
+	description = "DNS público instancia EC2"
+	value = module.nginx_server_qa.server_public_ip
+}
+
