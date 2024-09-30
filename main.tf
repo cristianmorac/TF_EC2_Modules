@@ -14,6 +14,8 @@ resource "aws_instance" "nginx-server" {
               EOF
   # agregar llave pública
   key_name = aws_key_pair.nginx-server-ssh.key_name
+  # security group
+  vpc_security_group_ids = [aws_security_group.nginx-server-sg.id]
 }
 
 resource "aws_key_pair" "nginx-server-ssh" {
@@ -21,6 +23,32 @@ resource "aws_key_pair" "nginx-server-ssh" {
   key_name = "nginx-server-ssh"
   # ubucación de la llave
   public_key = file("nginx-server.key.pub")
+}
+
+resource "aws_security_group" "nginx-server-sg" {
+  name = "nginx-server-sg"
+  description = "Security group allowing ssh y HTTP acces"
+
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # accceder desde cualquier IP
+  }
+
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # accceder desde cualquier IP
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1" # aceptar cualquier protocolo
+    cidr_blocks = ["0.0.0.0/0"] # accceder desde cualquier IP
+  }
 }
 
 
