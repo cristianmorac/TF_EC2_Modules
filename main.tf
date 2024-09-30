@@ -16,6 +16,14 @@ resource "aws_instance" "nginx-server" {
   key_name = aws_key_pair.nginx-server-ssh.key_name
   # security group
   vpc_security_group_ids = [aws_security_group.nginx-server-sg.id]
+
+  tags = {
+		Name = "nginx-server" # nombre de la instancia
+		Environment = "test" # ambiente
+		Owner = "owner@correo.com" # Dueño
+		Team = "DevOps" # Equipo
+		Project = "Webinar"		
+	}
 }
 
 resource "aws_key_pair" "nginx-server-ssh" {
@@ -23,6 +31,14 @@ resource "aws_key_pair" "nginx-server-ssh" {
   key_name = "nginx-server-ssh"
   # ubucación de la llave
   public_key = file("nginx-server.key.pub")
+
+  tags = {
+		Name = "nginx-server-ssh" # nombre de la instancia
+		Environment = "test" # ambiente
+		Owner = "owner@correo.com" # Dueño
+		Team = "DevOps" # Equipo
+		Project = "Webinar"		
+	}
 }
 
 resource "aws_security_group" "nginx-server-sg" {
@@ -49,6 +65,14 @@ resource "aws_security_group" "nginx-server-sg" {
     protocol = "-1" # aceptar cualquier protocolo
     cidr_blocks = ["0.0.0.0/0"] # accceder desde cualquier IP
   }
+
+  tags = {
+		Name = "nginx-server-output" # nombre de la instancia
+		Environment = "test" # ambiente
+		Owner = "owner@correo.com" # Dueño
+		Team = "DevOps" # Equipo
+		Project = "Webinar"		
+	}
 }
 
 
