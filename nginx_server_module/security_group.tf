@@ -1,5 +1,5 @@
 resource "aws_security_group" "nginx-server-sg" {
-  name = "nginx-server-sg"
+  name = "${var.srv_name}-sg"
   description = "Security group allowing ssh y HTTP acces"
 
   ingress {

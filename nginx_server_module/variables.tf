@@ -12,7 +12,7 @@ variable "instance_type" {
 
 variable "srv_name" {
   type        = string
-  default     = "webserver"
+  default     = "nginx-server"
   description = "nombre del servidor"
 }
 
